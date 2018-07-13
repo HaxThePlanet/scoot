@@ -9,6 +9,8 @@
     tools:openDrawer="start">
 
     <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
+
+
     <RelativeLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
@@ -36,9 +38,8 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
-
     <include
-        layout="@layout/app_bar_main"
+        layout="@layout/left_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
