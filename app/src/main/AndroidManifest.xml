@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <!--The API key for Google Maps-based APIs.-->
         <meta-data
             android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAzjEmAHN2Ipza2CB8JZrTo-TWeHWHZI1A" />
@@ -22,11 +21,19 @@
         </activity>
 
         <!--Signup Activity-->
-        <activity android:name=".SignupActivity" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:name=".SignupActivityOne" android:label="@string/app_name" android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!--Signup Activity Step Two-->
+        <activity android:name=".SignupActivityTwo" android:label="@string/app_name" android:theme="@style/AppTheme">
+        </activity>
+
+        <!--Settings-->
+        <activity android:name=".SettingsActivity" android:label="@string/app_name" android:theme="@style/AppTheme">
         </activity>
 
         <!--Scan Activity-->
@@ -34,7 +41,6 @@
 
         <!--Main-->
         <activity android:name=".MainActivity" android:label="@string/app_name" android:theme="@style/AppTheme.NoActionBar">
-
         </activity>
     </application>
 </manifest>
