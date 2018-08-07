@@ -1,5 +1,7 @@
 package com.example.currentplacedetailsonmap;
 
+import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,6 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.currentplacedetailsonmap.BroadcastReceiver.SendBleReceiver;
+import com.example.currentplacedetailsonmap.base.BleBase;
+import com.example.currentplacedetailsonmap.base.BleStatus;
+import com.example.currentplacedetailsonmap.main.BluetoothLeService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -47,6 +53,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMap
     private final LatLng mDefaultLocation = new LatLng(-373382, 121.8863);
     private static final int DEFAULT_ZOOM = 13;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int REQUEST_CAMERA_RESULT = 1;
     private boolean mLocationPermissionGranted;
 
     // The geographical location where the device is currently located. That is, the last-known
@@ -56,6 +63,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMap
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
+    public BleBase mBase;
+    private SendBleReceiver mSendBleReceiver;
+    public BleStatus mState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +93,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMap
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //Start BT service
+        startService(new Intent(this, BluetoothLeService.class));
 
         initUI();
     }
@@ -125,6 +138,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMap
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        getCameraPermission();
     }
 
     /**
@@ -162,6 +177,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMap
         }
     }
 
+    private void getCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {android.Manifest.permission.CAMERA},REQUEST_CAMERA_RESULT);
+        }
+    }
 
     /**
      * Prompts the user for permission to use the device location.

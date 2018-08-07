@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.currentplacedetailsonmap">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COURSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" android:required="true" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:required="true"  />
+    <uses-permission android:name="android.bluetooth.device.action.FOUND" android:required="true" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -37,6 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name="com.example.currentplacedetailsonmap.main.BluetoothLeService" />
     </application>
 
 </manifest>
