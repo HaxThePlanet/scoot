@@ -29,13 +29,13 @@
             android:value="AIzaSyAzjEmAHN2Ipza2CB8JZrTo-TWeHWHZI1A" />
 
         <activity
-            android:name=".ScannerActivity"
+            android:name=".Activity.ScannerActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
         </activity>
 
         <activity
-            android:name="com.example.currentplacedetailsonmap.MapsActivityCurrentPlace"
+            android:name="com.example.currentplacedetailsonmap.Activity.MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_maps">
             <intent-filter>

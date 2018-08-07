@@ -18,7 +18,7 @@ public class WriteDataQueue {
 //    private final int send_what = TinkerReport.KEY_APPLIED_SUCC_COST_5S_LESS;
     private Timer timer;
     private int timer_Num = 0;
-    private int timer_delay = 1000;
+    private int timer_delay = 5000;
     private final int timer_maxNum = 3;
 
     class C05831 extends Handler {

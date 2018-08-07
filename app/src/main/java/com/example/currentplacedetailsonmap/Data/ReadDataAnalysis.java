@@ -99,7 +99,9 @@ public class ReadDataAnalysis {
                 z2 = false;
             }
             mStatus.setError_controller(Boolean.valueOf(z2));
-            if (((Unsigned(data[9]) >> 2) & 1) == 1) {
+            if (((Unsigned(data[9]) >> 2) &
+
+                    1) == 1) {
                 z2 = true;
             } else {
                 z2 = false;

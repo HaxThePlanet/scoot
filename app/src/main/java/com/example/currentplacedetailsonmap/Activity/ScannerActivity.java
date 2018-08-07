@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap;
+package com.example.currentplacedetailsonmap.Activity;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.example.currentplacedetailsonmap.BroadcastReceiver.ReadBleBroadcast;
 import com.example.currentplacedetailsonmap.BroadcastReceiver.SendBleReceiver;
+import com.example.currentplacedetailsonmap.R;
 import com.example.currentplacedetailsonmap.base.BleBase;
 import com.example.currentplacedetailsonmap.base.BleStatus;
 import com.example.currentplacedetailsonmap.search.SearchBle;
@@ -52,6 +53,7 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
     private RelativeLayout scanCropView;
     private ImageView scanLine;
     private SurfaceView scanPreview;
+    private BleStatus mState = new BleStatus();
 
     private void init() {
         this.mSearch = new SearchBle(this);
@@ -70,6 +72,9 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
         beepManager = new BeepManager(this);
         barcodeView = findViewById(R.id.zxing_barcode_scanner);
         barcodeView.decodeContinuous(callback);
+
+        mSendBleReceiver = new SendBleReceiver(this, new C08611());
+        mSendBleReceiver.registerReceiver();
     }
 
     private BarcodeCallback callback = new BarcodeCallback() {
@@ -82,6 +87,8 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
 
             lastText = result.getText();
             barcodeView.setStatusText(result.getText());
+            beepManager.playBeepSoundAndVibrate();
+            beepManager.playBeepSoundAndVibrate();
             beepManager.playBeepSoundAndVibrate();
 
             Log.e(TAG, "result=" + result);
@@ -111,7 +118,39 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
         mBase = bleHas.get(mac);
 
         ReadBleBroadcast.connect(this, mBase);
+
+//        this.finish();
     }
+
+//    class C08523 implements SendBleReceiver.BLESendListener {
+//        C08523() {
+//        }
+//
+//        public void Changes(BleBase mBleBase, BleStatus mBleStatus) {
+//            switch (mBleStatus.getState()) {
+//                case -1:
+////                    MainActivity.this.setConnect(Boolean.valueOf(false));
+//                    mState = new BleStatus();
+////                    MainActivity.this.setData(MainActivity.this.mState);
+//                    break;
+//                case 3:
+////                    ReadBleBroadcast.SettingUp(ScannerActivity.this, (byte) BLECommon.bAddrSetLock, 1);
+//                    break;
+//                case 4:
+////                    MainActivity.this.setConnect(Boolean.valueOf(true));
+////                    MainActivity.this.setData(mBleStatus);
+//                    break;
+//            }
+//            mState = mBleStatus;
+//            mBase = mBleBase;
+////            MainActivity.this.getMyApplication().mBase = MainActivity.this.mBase;
+////            MainActivity.this.getMyApplication().mState = MainActivity.this.mState;
+////            MainActivity.this.hornView.setmState(MainActivity.this.mState);
+//        }
+//
+//        public void settingUp(int code, Boolean isstate) {
+//        }
+//    }
 
     public void onLeScan(BleBase mBle) {
         if (!bleHas.containsKey(mBle.getAddress())) {
@@ -133,13 +172,15 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
         }
 
         public void Changes(BleBase mBleBase, BleStatus mBleStatus) {
+            Log.i("CHAD", String.valueOf(mBleStatus.getState()));
+
             switch (mBleStatus.getState()) {
                 case -2:
                     mBase = null;
                     return;
                 case -1:
                     if (mBase != null) {
-                        ReadBleBroadcast.connect(ScannerActivity.this, ScannerActivity.this.mBase);
+//                        ReadBleBroadcast.connect(ScannerActivity.this, ScannerActivity.this.mBase);
                         return;
 //                    } else if (ScannerActivity.this.mWaitDialog.isShowing()) {
 //                        ScannerActivity.this.mWaitDialog.cancel();
