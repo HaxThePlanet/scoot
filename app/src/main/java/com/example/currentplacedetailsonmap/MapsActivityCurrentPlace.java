@@ -29,8 +29,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
-public class MapsActivityCurrentPlace extends AppCompatActivity
-        implements OnMapReadyCallback {
+public class MapsActivityCurrentPlace extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = MapsActivityCurrentPlace.class.getSimpleName();
     private GoogleMap mMap;
@@ -86,7 +85,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
         initUI();
-
     }
 
     private void initUI() {

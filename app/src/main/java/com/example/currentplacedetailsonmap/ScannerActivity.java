@@ -1,115 +1,85 @@
 package com.example.currentplacedetailsonmap;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.BeepManager;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
+import com.journeyapps.barcodescanner.DefaultDecoderFactory;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class ScannerActivity extends AppCompatActivity {
 
-private CaptureManager capture;
-private DecoratedBarcodeView barcodeScannerView;
-private Button switchFlashlightButton;
-private boolean isFlashLightOn = false;
+    private static final String TAG = ScannerActivity.class.getSimpleName();
+    private DecoratedBarcodeView barcodeView;
+    private BeepManager beepManager;
+    private String lastText;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_scanner);
-//    Toolbar toolbar = findViewById(R.id.toolbar);
-//    setSupportActionBar(toolbar);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scanner);
 
-    //Initialize barcode scanner view
-    barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
-
-    //set torch listener
-//    barcodeScannerView.setTorchListener(this);
-
-    //switch flashlight button
-//    switchFlashlightButton = (Button) findViewById(R.id.switch_flashlight);
-
-    // if the device does not have flashlight in its camera,
-    // then remove the switch flashlight button...
-//    if (!hasFlash()) {
-//        switchFlashlightButton.setVisibility(View.GONE);
-//    } else {
-//        switchFlashlightButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                switchFlashlight();
-//            }
-//        });
-//    }
-
-    //start capture
-    capture = new CaptureManager(this, barcodeScannerView);
-    capture.initializeFromIntent(getIntent(), savedInstanceState);
-    capture.decode();
-}
-
-
-/**
- * Check if the device's camera has a Flashlight.
- *
- * @return true if there is Flashlight, otherwise false.
- */
-private boolean hasFlash() {
-    return getApplicationContext().getPackageManager()
-            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-}
-
-public void switchFlashlight() {
-    if (isFlashLightOn) {
-        barcodeScannerView.setTorchOff();
-        isFlashLightOn = false;
-    } else {
-        barcodeScannerView.setTorchOn();
-        isFlashLightOn = true;
+        //Initialize barcode scanner view
+        beepManager = new BeepManager(this);
+        barcodeView = findViewById(R.id.zxing_barcode_scanner);
+        barcodeView.decodeContinuous(callback);
     }
 
-}
+    private BarcodeCallback callback = new BarcodeCallback() {
+        @Override
+        public void barcodeResult(BarcodeResult result) {
+            if(result.getText() == null || result.getText().equals(lastText)) {
+                // Prevent duplicate scans
+                return;
+            }
 
-//@Override
-//public void onTorchOn() {
-//    switchFlashlightButton.setText(R.string.turn_off_flashlight);
-//}
-//
-//@Override
-//public void onTorchOff() {
-//    switchFlashlightButton.setText(R.string.turn_on_flashlight);
-//}
+            lastText = result.getText();
+            barcodeView.setStatusText(result.getText());
+            beepManager.playBeepSoundAndVibrate();
+        }
 
-@Override
-protected void onResume() {
-    super.onResume();
-    capture.onResume();
-}
+        @Override
+        public void possibleResultPoints(List<ResultPoint> resultPoints) {
+        }
+    };
 
-@Override
-protected void onPause() {
-    super.onPause();
-    capture.onPause();
-}
 
-@Override
-protected void onDestroy() {
-    super.onDestroy();
-    capture.onDestroy();
-}
+    @Override
+    protected void onResume() {
+        super.onResume();
+        barcodeView.resume();
+    }
 
-@Override
-protected void onSaveInstanceState(Bundle outState) {
-    super.onSaveInstanceState(outState);
-    capture.onSaveInstanceState(outState);
-}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        barcodeView.pause();
+    }
 
-@Override
-public boolean onKeyDown(int keyCode, KeyEvent event) {
-    return barcodeScannerView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
-}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
 }
