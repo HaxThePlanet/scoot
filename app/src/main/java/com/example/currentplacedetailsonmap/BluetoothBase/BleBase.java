@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.base;
+package com.example.currentplacedetailsonmap.BluetoothBase;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,19 +9,6 @@ public class BleBase implements Parcelable {
     public String Name;
     public String PassWord;
     public int rssi;
-
-    static class C05751 implements Creator<BleBase> {
-        C05751() {
-        }
-
-        public BleBase createFromParcel(Parcel in) {
-            return new BleBase(in);
-        }
-
-        public BleBase[] newArray(int size) {
-            return new BleBase[size];
-        }
-    }
 
     public BleBase(Parcel in) {
         try {
@@ -74,5 +61,18 @@ public class BleBase implements Parcelable {
 
     public void setRssi(int rssi) {
         this.rssi = rssi;
+    }
+
+    static class C05751 implements Creator<BleBase> {
+        C05751() {
+        }
+
+        public BleBase createFromParcel(Parcel in) {
+            return new BleBase(in);
+        }
+
+        public BleBase[] newArray(int size) {
+            return new BleBase[size];
+        }
     }
 }

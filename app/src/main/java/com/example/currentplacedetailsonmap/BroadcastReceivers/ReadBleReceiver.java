@@ -1,25 +1,15 @@
-package com.example.currentplacedetailsonmap.BroadcastReceiver;
+package com.example.currentplacedetailsonmap.BroadcastReceivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.example.currentplacedetailsonmap.base.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
 
 public class ReadBleReceiver extends BroadcastReceiver {
     public Context context;
     public BLEReadListener mListener;
-
-    public interface BLEReadListener {
-        void LostWriteData(byte[] bArr);
-
-        boolean connect(BleBase bleBase);
-
-        void disconnect();
-
-        void renameBLE(String str);
-    }
 
     public ReadBleReceiver(Context context, BLEReadListener mListener) {
         this.mListener = mListener;
@@ -52,5 +42,15 @@ public class ReadBleReceiver extends BroadcastReceiver {
         } else if (intent.getAction().equals(ReadBleBroadcast.ACTION_WriteData)) {
             this.mListener.LostWriteData(intent.getByteArrayExtra(ReadBleBroadcast.ACTION_WriteData_data));
         }
+    }
+
+    public interface BLEReadListener {
+        void LostWriteData(byte[] bArr);
+
+        boolean connect(BleBase bleBase);
+
+        void disconnect();
+
+        void renameBLE(String str);
     }
 }

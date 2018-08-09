@@ -1,29 +1,19 @@
-package com.example.currentplacedetailsonmap.BroadcastReceiver;
+package com.example.currentplacedetailsonmap.BroadcastReceivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.base.BleStatus;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
 import com.google.android.gms.maps.model.LatLng;
 
 public class SendBleReceiver extends BroadcastReceiver {
     public Context context;
-    private Boolean isregister = Boolean.valueOf(false);
     public BLESendListener mListener;
+    private Boolean isregister = Boolean.valueOf(false);
     private BLELocationListener mLocation;
-
-    public interface BLELocationListener {
-        void onLocation(LatLng latLng);
-    }
-
-    public interface BLESendListener {
-        void Changes(BleBase bleBase, BleStatus bleStatus);
-
-        void settingUp(int i, Boolean bool);
-    }
 
     public SendBleReceiver(Context context, BLESendListener mListener) {
         this.mListener = mListener;
@@ -67,5 +57,15 @@ public class SendBleReceiver extends BroadcastReceiver {
         } else if (intent.getAction().equals(SendBleBroadcast.ACTION_Location) && this.mLocation != null) {
             this.mLocation.onLocation((LatLng) intent.getParcelableExtra(SendBleBroadcast.ACTION_Location_latlng));
         }
+    }
+
+    public interface BLELocationListener {
+        void onLocation(LatLng latLng);
+    }
+
+    public interface BLESendListener {
+        void Changes(BleBase bleBase, BleStatus bleStatus);
+
+        void settingUp(int i, Boolean bool);
     }
 }

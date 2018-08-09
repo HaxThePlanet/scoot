@@ -1,11 +1,11 @@
-package com.example.currentplacedetailsonmap.BroadcastReceiver;
+package com.example.currentplacedetailsonmap.BroadcastReceivers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 
-import com.example.currentplacedetailsonmap.Data.SendDataAnalysis;
-import com.example.currentplacedetailsonmap.base.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothData.SendDataAnalysis;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
 
 public class ReadBleBroadcast {
     public static final int myPid = Process.myPid();

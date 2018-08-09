@@ -1,11 +1,11 @@
-package com.example.currentplacedetailsonmap.BroadcastReceiver;
+package com.example.currentplacedetailsonmap.BroadcastReceivers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Process;
 
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.base.BleStatus;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
 import com.google.android.gms.maps.model.LatLng;
 
 public class SendBleBroadcast {

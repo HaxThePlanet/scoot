@@ -1,10 +1,10 @@
-package com.example.currentplacedetailsonmap.tool;
+package com.example.currentplacedetailsonmap.Util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 
-import com.example.currentplacedetailsonmap.base.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 

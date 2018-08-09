@@ -1,13 +1,13 @@
-package com.example.currentplacedetailsonmap.Data;
+package com.example.currentplacedetailsonmap.BluetoothData;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.currentplacedetailsonmap.BroadcastReceiver.SendBleBroadcast;
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.base.BleStatus;
-import com.example.currentplacedetailsonmap.tool.BleSharedPreferences;
-import com.example.currentplacedetailsonmap.tool.BleTool;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.SendBleBroadcast;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
+import com.example.currentplacedetailsonmap.Util.BleSharedPreferences;
+import com.example.currentplacedetailsonmap.Util.BleTool;
 
 import java.io.ByteArrayOutputStream;
 

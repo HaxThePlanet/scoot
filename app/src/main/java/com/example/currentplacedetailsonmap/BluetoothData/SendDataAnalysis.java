@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.Data;
+package com.example.currentplacedetailsonmap.BluetoothData;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;

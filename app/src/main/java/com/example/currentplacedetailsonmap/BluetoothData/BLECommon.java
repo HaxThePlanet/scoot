@@ -1,6 +1,6 @@
-package com.example.currentplacedetailsonmap.Data;
+package com.example.currentplacedetailsonmap.BluetoothData;
 
-import com.example.currentplacedetailsonmap.tool.CRC16;
+import com.example.currentplacedetailsonmap.Util.CRC16;
 
 import java.io.ByteArrayOutputStream;
 

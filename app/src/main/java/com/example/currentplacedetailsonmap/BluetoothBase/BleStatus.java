@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.base;
+package com.example.currentplacedetailsonmap.BluetoothBase;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -32,19 +32,6 @@ public class BleStatus implements Parcelable {
     public int wSpeed = 0;
     public int wSpeedAvg = 0;
     public int wTRIPMeterInt = 0;
-
-    static class C05761 implements Creator<BleStatus> {
-        C05761() {
-        }
-
-        public BleStatus createFromParcel(Parcel in) {
-            return new BleStatus();
-        }
-
-        public BleStatus[] newArray(int size) {
-            return new BleStatus[size];
-        }
-    }
 
     public BleStatus() {
         Boolean bool;
@@ -325,6 +312,19 @@ public class BleStatus implements Parcelable {
 
     public void setbTRIPMeterDec(int bTRIPMeterDec) {
         this.bTRIPMeterDec = bTRIPMeterDec;
+    }
+
+    static class C05761 implements Creator<BleStatus> {
+        C05761() {
+        }
+
+        public BleStatus createFromParcel(Parcel in) {
+            return new BleStatus();
+        }
+
+        public BleStatus[] newArray(int size) {
+            return new BleStatus[size];
+        }
     }
 }
 

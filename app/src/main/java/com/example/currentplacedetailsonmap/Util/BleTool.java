@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.tool;
+package com.example.currentplacedetailsonmap.Util;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;

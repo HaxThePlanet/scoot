@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.tool;
+package com.example.currentplacedetailsonmap.Util;
 
 public class RssiType {
     public static int getStatic(int Rssi) {

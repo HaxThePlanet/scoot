@@ -11,18 +11,18 @@
 
     <!--&lt;!&ndash; ActionBar styles &ndash;&gt;-->
     <!--<style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar">-->
-        <!--<item name="android:titleTextStyle">@style/MyActionBarTitleText</item>-->
+    <!--<item name="android:titleTextStyle">@style/MyActionBarTitleText</item>-->
     <!--</style>-->
 
     <!--&lt;!&ndash; ActionBar title text &ndash;&gt;-->
     <!--<style name="MyActionBarTitleText"-->
-        <!--parent="@style/TextAppearance.Holo.Widget.ActionBar.Title">-->
-        <!--<item name="android:textColor">@color/actionbar_text</item>-->
+    <!--parent="@style/TextAppearance.Holo.Widget.ActionBar.Title">-->
+    <!--<item name="android:textColor">@color/actionbar_text</item>-->
     <!--</style>-->
 
     <!--&lt;!&ndash; ActionBar tabs text styles &ndash;&gt;-->
     <!--<style name="MyActionBarTabText"-->
-        <!--parent="@style/Widget.Holo.ActionBar.TabText">-->
-        <!--<item name="android:textColor">@color/actionbar_text</item>-->
+    <!--parent="@style/Widget.Holo.ActionBar.TabText">-->
+    <!--<item name="android:textColor">@color/actionbar_text</item>-->
     <!--</style>-->
 </resources>

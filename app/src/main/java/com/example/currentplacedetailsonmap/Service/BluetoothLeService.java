@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.main;
+package com.example.currentplacedetailsonmap.Service;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -17,138 +17,39 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.currentplacedetailsonmap.BroadcastReceiver.ReadBleBroadcast;
-import com.example.currentplacedetailsonmap.BroadcastReceiver.ReadBleReceiver;
-import com.example.currentplacedetailsonmap.BroadcastReceiver.SendBleBroadcast;
-import com.example.currentplacedetailsonmap.Data.BLECommon;
-import com.example.currentplacedetailsonmap.Data.ReadDataAnalysis;
-import com.example.currentplacedetailsonmap.Data.ReadDataAnalysisListener;
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.base.BleStatus;
-import com.example.currentplacedetailsonmap.tool.BleSharedPreferences;
-import com.example.currentplacedetailsonmap.tool.BleTool;
-import com.example.currentplacedetailsonmap.tool.WriteDataQueue;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.ReadBleBroadcast;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.ReadBleReceiver;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.SendBleBroadcast;
+import com.example.currentplacedetailsonmap.BluetoothData.BLECommon;
+import com.example.currentplacedetailsonmap.BluetoothData.ReadDataAnalysis;
+import com.example.currentplacedetailsonmap.BluetoothData.ReadDataAnalysisListener;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
+import com.example.currentplacedetailsonmap.BluetoothData.SampleGattAttributes;
+import com.example.currentplacedetailsonmap.BluetoothData.SendTimer;
+import com.example.currentplacedetailsonmap.Util.BleSharedPreferences;
+import com.example.currentplacedetailsonmap.Util.BleTool;
+import com.example.currentplacedetailsonmap.Util.WriteDataQueue;
 
 import java.util.List;
 
 public class BluetoothLeService extends Service implements ReadBleReceiver.BLEReadListener, WriteDataQueue.QueueListener {
     private static final String TAG = BluetoothLeService.class.getSimpleName();
-//    private BleLocation bleLocation;
-    BluetoothDevice device;
     private final IBinder mBinder = new LocalBinder();
+    @SuppressLint({"NewApi"})
+    private final BluetoothGattCallback mGattCallback = new C05771();
+    public ReadBleReceiver mReadReceiver;
+    //    private BleLocation bleLocation;
+    BluetoothDevice device;
     private BleBase mBleBase = new BleBase(null);
     private BleStatus mBleStatus = new BleStatus();
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothGatt mBluetoothGatt;
     private BluetoothManager mBluetoothManager;
-    @SuppressLint({"NewApi"})
-    private final BluetoothGattCallback mGattCallback = new C05771();
     private WriteDataQueue mQueue;
     private ReadDataAnalysis mReadDataAnalysis;
-    public ReadBleReceiver mReadReceiver;
     private SendTimer mSendTimer;
     private BleSharedPreferences mShared;
-
-    class C05771 extends BluetoothGattCallback {
-        Boolean lj = Boolean.valueOf(true);
-
-        C05771() {
-        }
-
-        @SuppressLint({"NewApi"})
-        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            if (newState == 2 && this.lj.booleanValue()) {
-                BluetoothLeService.this.mBleStatus.setState(1);
-                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-                Log.i(BluetoothLeService.TAG, "Connected to GATT server.");
-                Log.i(BluetoothLeService.TAG, "Attempting to start service discovery:" + BluetoothLeService.this.mBluetoothGatt.discoverServices());
-                BluetoothLeService.this.mQueue.start();
-            } else if (newState == 0) {
-                BluetoothLeService.this.mSendTimer.closeAll();
-                BluetoothLeService.this.mQueue.clear();
-                BluetoothLeService.this.mQueue.close();
-                BluetoothLeService.this.close();
-                this.lj = Boolean.valueOf(true);
-                BluetoothLeService.this.mBleStatus = new BleStatus();
-                BluetoothLeService.this.mBleStatus.setState(-1);
-                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-                Log.i(BluetoothLeService.TAG, "Disconnected from GATT server.");
-//                BluetoothLeService.this.bleLocation.stop();
-            }
-        }
-
-        public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-            super.onDescriptorWrite(gatt, descriptor, status);
-            Log.e(BluetoothLeService.TAG, "onDescriptorWrite=" + descriptor.getUuid() + "------" + status);
-        }
-
-        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicWrite(gatt, characteristic, status);
-        }
-
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            if (status == 0) {
-                Log.w(BluetoothLeService.TAG, "发现服务");
-                BluetoothLeService.this.enableLostNoti();
-                BluetoothLeService.this.mBleStatus.setState(2);
-                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-                this.lj = Boolean.valueOf(false);
-                return;
-            }
-            Log.w(BluetoothLeService.TAG, "onServicesDiscovered received: " + status);
-        }
-
-        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            if (status == 0) {
-                BluetoothLeService.this.broadcastUpdate(characteristic);
-            }
-        }
-
-        @SuppressLint({"NewApi"})
-        @TargetApi(18)
-        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            if (SampleGattAttributes.NotifyCharacteristicUUID.equals(characteristic.getUuid())) {
-                BluetoothLeService.this.broadcastUpdate(characteristic);
-            }
-        }
-    }
-
-    public class LocalBinder extends Binder {
-        public BluetoothLeService getService() {
-            return BluetoothLeService.this;
-        }
-    }
-
-    class C08452 implements ReadDataAnalysisListener {
-        C08452() {
-        }
-
-        public void VerificationPw(Boolean ispw) {
-            BluetoothLeService.this.mSendTimer.closePw();
-            if (ispw.booleanValue()) {
-                BluetoothLeService.this.mShared.setBleBase(BluetoothLeService.this.mBleBase);
-                ReadBleBroadcast.ReadUp(BluetoothLeService.this, BLECommon.bAddrUnit);
-                ReadBleBroadcast.SettingUp(BluetoothLeService.this, (byte) BLECommon.bAddrSetLock, 1);
-                BluetoothLeService.this.mBleStatus.setState(3);
-                BluetoothLeService.this.mSendTimer.sendUpTime();
-//                BluetoothLeService.this.bleLocation.start();
-            } else {
-                BluetoothLeService.this.mBleStatus.setState(-2);
-                BluetoothLeService.this.disconnect();
-            }
-            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-        }
-
-        public void Changes(BleStatus mStatus) {
-            BluetoothLeService.this.mBleStatus = mStatus;
-            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-        }
-
-        public void Changes(BleBase base) {
-            BluetoothLeService.this.mBleBase = base;
-            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
-        }
-    }
 
     @SuppressLint({"NewApi"})
     @TargetApi(18)
@@ -378,6 +279,107 @@ public class BluetoothLeService extends Service implements ReadBleReceiver.BLERe
         } else if (setCharacteristicNotification(TxPowerLevel, true).booleanValue()) {
             Log.w(TAG, "3");
             this.mSendTimer.sendPw(this.mBleBase.getPassWord());
+        }
+    }
+
+    class C05771 extends BluetoothGattCallback {
+        Boolean lj = Boolean.valueOf(true);
+
+        C05771() {
+        }
+
+        @SuppressLint({"NewApi"})
+        public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
+            if (newState == 2 && this.lj.booleanValue()) {
+                BluetoothLeService.this.mBleStatus.setState(1);
+                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
+                Log.i(BluetoothLeService.TAG, "Connected to GATT server.");
+                Log.i(BluetoothLeService.TAG, "Attempting to start service discovery:" + BluetoothLeService.this.mBluetoothGatt.discoverServices());
+                BluetoothLeService.this.mQueue.start();
+            } else if (newState == 0) {
+                BluetoothLeService.this.mSendTimer.closeAll();
+                BluetoothLeService.this.mQueue.clear();
+                BluetoothLeService.this.mQueue.close();
+                BluetoothLeService.this.close();
+                this.lj = Boolean.valueOf(true);
+                BluetoothLeService.this.mBleStatus = new BleStatus();
+                BluetoothLeService.this.mBleStatus.setState(-1);
+                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
+                Log.i(BluetoothLeService.TAG, "Disconnected from GATT server.");
+//                BluetoothLeService.this.bleLocation.stop();
+            }
+        }
+
+        public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
+            super.onDescriptorWrite(gatt, descriptor, status);
+            Log.e(BluetoothLeService.TAG, "onDescriptorWrite=" + descriptor.getUuid() + "------" + status);
+        }
+
+        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            super.onCharacteristicWrite(gatt, characteristic, status);
+        }
+
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            if (status == 0) {
+                Log.w(BluetoothLeService.TAG, "发现服务");
+                BluetoothLeService.this.enableLostNoti();
+                BluetoothLeService.this.mBleStatus.setState(2);
+                SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
+                this.lj = Boolean.valueOf(false);
+                return;
+            }
+            Log.w(BluetoothLeService.TAG, "onServicesDiscovered received: " + status);
+        }
+
+        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
+            if (status == 0) {
+                BluetoothLeService.this.broadcastUpdate(characteristic);
+            }
+        }
+
+        @SuppressLint({"NewApi"})
+        @TargetApi(18)
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            if (SampleGattAttributes.NotifyCharacteristicUUID.equals(characteristic.getUuid())) {
+                BluetoothLeService.this.broadcastUpdate(characteristic);
+            }
+        }
+    }
+
+    public class LocalBinder extends Binder {
+        public BluetoothLeService getService() {
+            return BluetoothLeService.this;
+        }
+    }
+
+    class C08452 implements ReadDataAnalysisListener {
+        C08452() {
+        }
+
+        public void VerificationPw(Boolean ispw) {
+            BluetoothLeService.this.mSendTimer.closePw();
+            if (ispw.booleanValue()) {
+                BluetoothLeService.this.mShared.setBleBase(BluetoothLeService.this.mBleBase);
+                ReadBleBroadcast.ReadUp(BluetoothLeService.this, BLECommon.bAddrUnit);
+                ReadBleBroadcast.SettingUp(BluetoothLeService.this, (byte) BLECommon.bAddrSetLock, 1);
+                BluetoothLeService.this.mBleStatus.setState(3);
+                BluetoothLeService.this.mSendTimer.sendUpTime();
+//                BluetoothLeService.this.bleLocation.start();
+            } else {
+                BluetoothLeService.this.mBleStatus.setState(-2);
+                BluetoothLeService.this.disconnect();
+            }
+            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
+        }
+
+        public void Changes(BleStatus mStatus) {
+            BluetoothLeService.this.mBleStatus = mStatus;
+            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
+        }
+
+        public void Changes(BleBase base) {
+            BluetoothLeService.this.mBleBase = base;
+            SendBleBroadcast.Changes(BluetoothLeService.this, BluetoothLeService.this.mBleBase, BluetoothLeService.this.mBleStatus);
         }
     }
 }

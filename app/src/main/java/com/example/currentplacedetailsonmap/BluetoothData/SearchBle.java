@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.search;
+package com.example.currentplacedetailsonmap.BluetoothData;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter.LeScanCallback;
@@ -9,18 +9,38 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.tool.BleTool;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.Util.BleTool;
 
 
 public class SearchBle {
-    private String hanKey = "mBle";
-    @SuppressLint({"HandlerLeak"})
-    Handler hanLeScan = new C05822();
     public BleTool mBleTool;
     public SearchListener mSearchListener;
-    private int minrssi = -100;
+    @SuppressLint({"HandlerLeak"})
+    Handler hanLeScan = new C05822();
     LeScanCallback scanCallback = new C05811();
+    private String hanKey = "mBle";
+    private int minrssi = -100;
+
+    public SearchBle(Context mContext) {
+        this.mBleTool = new BleTool(mContext);
+    }
+
+    public void setListener(SearchListener SearchListener) {
+        this.mSearchListener = SearchListener;
+    }
+
+    public boolean search() {
+        if (!this.mBleTool.hasBleOpen() || !this.mBleTool.isBleOpen()) {
+            return false;
+        }
+        this.mBleTool.adapter.stopLeScan(this.scanCallback);
+        return this.mBleTool.adapter.startLeScan(this.scanCallback);
+    }
+
+    public void stop() {
+        this.mBleTool.adapter.stopLeScan(this.scanCallback);
+    }
 
     class C05811 implements LeScanCallback {
         C05811() {
@@ -52,25 +72,5 @@ public class SearchBle {
                 SearchBle.this.mSearchListener.onLeScan(mBle);
             }
         }
-    }
-
-    public SearchBle(Context mContext) {
-        this.mBleTool = new BleTool(mContext);
-    }
-
-    public void setListener(SearchListener SearchListener) {
-        this.mSearchListener = SearchListener;
-    }
-
-    public boolean search() {
-        if (!this.mBleTool.hasBleOpen() || !this.mBleTool.isBleOpen()) {
-            return false;
-        }
-        this.mBleTool.adapter.stopLeScan(this.scanCallback);
-        return this.mBleTool.adapter.startLeScan(this.scanCallback);
-    }
-
-    public void stop() {
-        this.mBleTool.adapter.stopLeScan(this.scanCallback);
     }
 }

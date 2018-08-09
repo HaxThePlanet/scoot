@@ -9,13 +9,13 @@ import android.view.SurfaceView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.example.currentplacedetailsonmap.BroadcastReceiver.ReadBleBroadcast;
-import com.example.currentplacedetailsonmap.BroadcastReceiver.SendBleReceiver;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.ReadBleBroadcast;
+import com.example.currentplacedetailsonmap.BroadcastReceivers.SendBleReceiver;
 import com.example.currentplacedetailsonmap.R;
-import com.example.currentplacedetailsonmap.base.BleBase;
-import com.example.currentplacedetailsonmap.base.BleStatus;
-import com.example.currentplacedetailsonmap.search.SearchBle;
-import com.example.currentplacedetailsonmap.search.SearchListener;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
+import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
+import com.example.currentplacedetailsonmap.BluetoothData.SearchBle;
+import com.example.currentplacedetailsonmap.BluetoothData.SearchListener;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.BeepManager;
 import com.journeyapps.barcodescanner.BarcodeCallback;
@@ -28,17 +28,15 @@ import java.util.List;
 public class ScannerActivity extends AppCompatActivity implements SearchListener {
 
     private static final String TAG = ScannerActivity.class.getSimpleName();
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 26;
+    private final int han_what = 0;
+    private final int han_what_scan = 1;
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
     private String lastText;
     private HashMap<String, BleBase> bleHas = new HashMap();
-
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 26;
-
-//    private MyHandler han;
+    //    private MyHandler han;
     private int han_time = 20000;
-    private final int han_what = 0;
-    private final int han_what_scan = 1;
     private boolean isHasSurface = false;
     private boolean isOpenCamera = false;
     private BleBase mBase;
@@ -46,7 +44,7 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
     private SendBleReceiver mSendBleReceiver;
 
     private String macid = "";
-//    private MainHandler mainHandler;
+    //    private MainHandler mainHandler;
     private Boolean mispw = Boolean.valueOf(false);
     private RelativeLayout rl_myinfo;
     private RelativeLayout scanContainer;
@@ -54,33 +52,10 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
     private ImageView scanLine;
     private SurfaceView scanPreview;
     private BleStatus mState = new BleStatus();
-
-    private void init() {
-        this.mSearch = new SearchBle(this);
-        this.mSearch.setListener(this);
-        this.mSendBleReceiver = new SendBleReceiver(this, new C08611());
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanner);
-
-        init();
-
-        //Initialize barcode scanner view
-        beepManager = new BeepManager(this);
-        barcodeView = findViewById(R.id.zxing_barcode_scanner);
-        barcodeView.decodeContinuous(callback);
-
-        mSendBleReceiver = new SendBleReceiver(this, new C08611());
-        mSendBleReceiver.registerReceiver();
-    }
-
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            if(result.getText() == null || result.getText().equals(lastText)) {
+            if (result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
@@ -112,6 +87,28 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    private void init() {
+        this.mSearch = new SearchBle(this);
+        this.mSearch.setListener(this);
+        this.mSendBleReceiver = new SendBleReceiver(this, new C08611());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scanner);
+
+        init();
+
+        //Initialize barcode scanner view
+        beepManager = new BeepManager(this);
+        barcodeView = findViewById(R.id.zxing_barcode_scanner);
+        barcodeView.decodeContinuous(callback);
+
+        mSendBleReceiver = new SendBleReceiver(this, new C08611());
+        mSendBleReceiver.registerReceiver();
+    }
 
     private void connect(String mac) {
         macid = "";
@@ -160,11 +157,33 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
             Base.setAddress(mBle.getAddress());
             Base.setPassWord("000000");
             bleHas.put(Base.getAddress(), Base);
-            if (bleHas.containsKey(macid) && !TextUtils.isEmpty(macid) ) {
+            if (bleHas.containsKey(macid) && !TextUtils.isEmpty(macid)) {
 //                this.han.removeMessages(1);
                 connect(macid);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        barcodeView.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        barcodeView.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     class C08611 implements SendBleReceiver.BLESendListener {
@@ -200,28 +219,6 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
 
         public void settingUp(int code, Boolean isstate) {
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        barcodeView.resume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        barcodeView.pause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
 }

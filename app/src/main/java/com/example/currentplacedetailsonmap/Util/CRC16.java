@@ -1,9 +1,9 @@
-package com.example.currentplacedetailsonmap.tool;
+package com.example.currentplacedetailsonmap.Util;
 
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.view.MotionEventCompat;
 
-import com.example.currentplacedetailsonmap.Data.BLECommon;
+import com.example.currentplacedetailsonmap.BluetoothData.BLECommon;
 
 
 public class CRC16 {

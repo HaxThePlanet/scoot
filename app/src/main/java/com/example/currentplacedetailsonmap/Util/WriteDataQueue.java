@@ -1,51 +1,26 @@
-package com.example.currentplacedetailsonmap.tool;
+package com.example.currentplacedetailsonmap.Util;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
+
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class WriteDataQueue {
+    private final int han_what = 100;
+    private final int timer_maxNum = 3;
     @SuppressLint({"HandlerLeak"})
     Handler han = new C05831();
     private int han_delay = 100;
-    private final int han_what = 100;
     private LinkedList list = new LinkedList();
     private QueueListener mListener;
     private byte[] send_data;
-//    private final int send_what = TinkerReport.KEY_APPLIED_SUCC_COST_5S_LESS;
+    //    private final int send_what = TinkerReport.KEY_APPLIED_SUCC_COST_5S_LESS;
     private Timer timer;
     private int timer_Num = 0;
     private int timer_delay = 5000;
-    private final int timer_maxNum = 3;
-
-    class C05831 extends Handler {
-        C05831() {
-        }
-
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 100:
-                    if (WriteDataQueue.this.timer == null && !WriteDataQueue.this.QueueEmpty()) {
-                        WriteDataQueue.this.startTime(WriteDataQueue.this.deQueue());
-                    }
-                    WriteDataQueue.this.start();
-                    return;
-//                case TinkerReport.KEY_APPLIED_SUCC_COST_5S_LESS /*200*/:
-//                    WriteDataQueue.this.mListener.deQueue((byte[]) msg.obj);
-//                    return;
-                default:
-                    return;
-            }
-        }
-    }
-
-    public interface QueueListener {
-        void deQueue(byte[] bArr);
-    }
 
     public WriteDataQueue(QueueListener mListener) {
         this.mListener = mListener;
@@ -129,5 +104,31 @@ public class WriteDataQueue {
 
     public Object QueuePeek() {
         return this.list.getFirst();
+    }
+
+    public interface QueueListener {
+        void deQueue(byte[] bArr);
+    }
+
+    class C05831 extends Handler {
+        C05831() {
+        }
+
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 100:
+                    if (WriteDataQueue.this.timer == null && !WriteDataQueue.this.QueueEmpty()) {
+                        WriteDataQueue.this.startTime(WriteDataQueue.this.deQueue());
+                    }
+                    WriteDataQueue.this.start();
+                    return;
+//                case TinkerReport.KEY_APPLIED_SUCC_COST_5S_LESS /*200*/:
+//                    WriteDataQueue.this.mListener.deQueue((byte[]) msg.obj);
+//                    return;
+                default:
+                    return;
+            }
+        }
     }
 }
