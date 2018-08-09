@@ -168,12 +168,16 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
     protected void onResume() {
         super.onResume();
         barcodeView.resume();
+
+        mSendBleReceiver.registerReceiver();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         barcodeView.pause();
+
+        unregisterReceiver(mSendBleReceiver);
     }
 
     @Override

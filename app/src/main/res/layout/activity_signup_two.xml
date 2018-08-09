@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_signup_two"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_bg">
+
+
+    <TextView
+        android:id="@+id/tv_check_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="CHECK YOUR EMAIL"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="66dp" />
+
+    <TextView
+        android:id="@+id/tv_email_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="60dp"
+        android:maxLines="4"
+        android:text="An email was sent to chadr76@gmail.com with your link to login"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_check_email" />
+
+    <Button
+        android:id="@+id/btn_signup_next_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_get_support"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:text="RESEND EMAIL"
+        tools:layout_editor_absoluteX="122dp"
+        tools:layout_editor_absoluteY="534dp" />
+
+    <TextView
+        android:id="@+id/btn_get_support"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="Tap here for support chat"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteX="127dp"
+        tools:layout_editor_absoluteY="680dp" />
+</RelativeLayout>
