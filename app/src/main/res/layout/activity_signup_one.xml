@@ -26,19 +26,14 @@
         android:textColor="@color/white"
         android:textSize="20dp" />
 
-    <EditText
-        android:id="@+id/et_email"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btn_signup_next_one"
         android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="ENTER EMAIL"
-        android:inputType="textEmailAddress"
-        android:text="chadr76@gmail.com"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btn_signup_next_one"
@@ -46,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:text="Next" />
 </RelativeLayout>
