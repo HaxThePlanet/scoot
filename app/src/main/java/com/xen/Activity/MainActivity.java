@@ -36,8 +36,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.xen.BluetoothData.BLECommon;
-import com.xen.BroadcastReceivers.ReadBleBroadcast;
 import com.xen.R;
 import com.xen.Service.BluetoothLeService;
 
@@ -96,10 +94,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_settings) {
             // Settings
@@ -140,14 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 getCameraPermission();
             }
         });
-
-        TextView leftButton = findViewById(R.id.button2);
-        leftButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ReadBleBroadcast.SettingUp(getApplication(), (byte) BLECommon.bAddrSetGear, 2);
-            }
-        });
-
         ImageView rightButton = findViewById(R.id.button_center_map);
         rightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
