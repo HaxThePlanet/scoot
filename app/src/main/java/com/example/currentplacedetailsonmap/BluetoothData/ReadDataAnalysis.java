@@ -6,8 +6,8 @@ import android.util.Log;
 import com.example.currentplacedetailsonmap.BroadcastReceivers.SendBleBroadcast;
 import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
 import com.example.currentplacedetailsonmap.BluetoothBase.BleStatus;
-import com.example.currentplacedetailsonmap.Util.BleSharedPreferences;
-import com.example.currentplacedetailsonmap.Util.BleTool;
+import com.example.currentplacedetailsonmap.Utility.BleSharedPreferences;
+import com.example.currentplacedetailsonmap.Utility.BleTool;
 
 import java.io.ByteArrayOutputStream;
 

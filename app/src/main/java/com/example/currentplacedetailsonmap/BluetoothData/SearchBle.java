@@ -10,7 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 
 import com.example.currentplacedetailsonmap.BluetoothBase.BleBase;
-import com.example.currentplacedetailsonmap.Util.BleTool;
+import com.example.currentplacedetailsonmap.Utility.BleTool;
 
 
 public class SearchBle {

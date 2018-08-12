@@ -1,4 +1,4 @@
-package com.example.currentplacedetailsonmap.Util;
+package com.example.currentplacedetailsonmap.Utility;
 
 import android.support.v4.internal.view.SupportMenu;
 import android.support.v4.view.MotionEventCompat;

@@ -44,8 +44,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
-    implementation 'com.google.android.gms:play-services:12.0.1'
-
+    implementation 'com.google.android.gms:play-services-location:15.0.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.stripe:stripe-android:6.1.2'
 }

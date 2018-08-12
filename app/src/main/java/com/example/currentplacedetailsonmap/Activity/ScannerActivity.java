@@ -61,7 +61,7 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
             }
 
             lastText = result.getText();
-            barcodeView.setStatusText(result.getText());
+//            barcodeView.setStatusText(result.getText());
             beepManager.playBeepSoundAndVibrate();
             beepManager.playBeepSoundAndVibrate();
             beepManager.playBeepSoundAndVibrate();
@@ -97,7 +97,7 @@ public class ScannerActivity extends AppCompatActivity implements SearchListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanner);
+        setContentView(R.layout.activity_scoot_scanner);
 
         init();
 

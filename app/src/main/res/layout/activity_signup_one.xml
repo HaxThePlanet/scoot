@@ -6,39 +6,16 @@
     android:layout_height="match_parent"
     android:background="@color/app_bg">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp"
-        app:srcCompat="@drawable/logo" />
-
     <TextView
         android:id="@+id/tv_tango_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="197dp"
+        android:layout_marginTop="16dp"
         android:text="@string/nav_header_title"
         android:textColor="@color/white"
         android:textSize="20dp" />
-
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_signup_next_one"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="ENTER EMAIL"
-        android:inputType="textEmailAddress"
-        android:text="chadr76@gmail.com"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
 
     <Button
         android:id="@+id/btn_signup_next_one"
@@ -46,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:text="Next" />
 </RelativeLayout>
