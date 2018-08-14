@@ -26,3 +26,5 @@
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
+
+-keep class com.stripe.android.** { *; }

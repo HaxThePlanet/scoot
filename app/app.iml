@@ -134,6 +134,7 @@
     <orderEntry type="library" name="Gradle: com.android.support:cursoradapter-28.0.0-alpha3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test:rules-0.5" level="project" />
     <orderEntry type="library" name="Gradle: com.facebook.android:facebook-login-4.35.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.stripe:stripe-android-8.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: javax.inject:javax.inject:1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:design-28.0.0-alpha3" level="project" />
     <orderEntry type="library" name="Gradle: com.journeyapps:zxing-android-embedded-3.5.0" level="project" />
@@ -154,7 +155,6 @@
     <orderEntry type="library" name="Gradle: com.android.support:documentfile-28.0.0-alpha3" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:asynclayoutinflater-28.0.0-alpha3" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-28.0.0-alpha3" level="project" />
-    <orderEntry type="library" name="Gradle: com.stripe:stripe-android-6.1.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.5@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.parse.bolts:bolts-android:1.4.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.parse.bolts:bolts-tasks:1.4.0@jar" level="project" />
