@@ -56,15 +56,14 @@
 
         <!--Splash-->
         <activity android:name=".Activity.PaymentActivity" android:label="@string/scan_title" android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!--Signup Activity-->
         <activity android:name=".Activity.SignupActivityOne" android:label="@string/app_name" android:theme="@style/AppTheme">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!--Signup Activity Step Two-->

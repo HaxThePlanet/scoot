@@ -93,13 +93,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_payment) {
+            Intent myIntent = new Intent(MainActivity.this, PaymentActivity.class);
+            MainActivity.this.startActivity(myIntent);
+        }
 
-        } else if (id == R.id.nav_settings) {
+        if (id == R.id.nav_settings) {
             // Settings
             Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
             MainActivity.this.startActivity(myIntent);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
